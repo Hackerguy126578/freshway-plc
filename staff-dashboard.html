@@ -236,4 +236,19 @@
     async function updateProfile() {
       try {
         // Get user ID from username
-        const res = await fetch(`https://api.roblox.com
+        const res = await fetch(`https://api.roblox.com/users/get-by-username?username=${username}`);
+        const data = await res.json();
+        if (data && data.Id) {
+          document.getElementById("profileAvatar").src = `https://www.roblox.com/headshot-thumbnail/image?userId=${data.Id}&width=420&height=420&format=png`;
+          document.getElementById("profileUsername").textContent = username;
+          // Role is static here, or you could fetch group role info if you want dynamic roles
+          document.getElementById("profileRole").textContent = "Founder";
+        }
+      } catch(e) {
+        console.error("Failed to load profile avatar", e);
+      }
+    }
+    updateProfile();
+  </script>
+</body>
+</html>
