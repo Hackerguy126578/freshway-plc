@@ -19,4 +19,18 @@ function Dashboard() {
       <h2>Shift Planning</h2>
       {shifts.map(s => (
         <div key={s._id}>
-          {s.title} on {new Date(s.date).toLocaleDateString()} from {s.startTime} to {
+          {s.title} on {new Date(s.date).toLocaleDateString()} from {s.startTime} to {s.endTime}
+        </div>
+      ))}
+
+      <h2>LOA Requests</h2>
+      {loaList.map(l => (
+        <div key={l._id}>
+          User: {l.userId} - {l.status} from {new Date(l.startDate).toLocaleDateString()} to {new Date(l.endDate).toLocaleDateString()}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default Dashboard;
