@@ -1,29 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Freshway PLC</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Freshway PLC</title>
+  <style>
+    /* Reset & basic */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      background: #0d47a1;
+      overflow: hidden;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      animation: fadeInContent 1.5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInContent {
+      to { opacity: 1; }
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 15px rgba(255,255,255,0.5);
+      animation: floatUpDown 6s ease-in-out infinite;
+    }
+
+    p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.85;
+      animation: floatUpDown 6s ease-in-out infinite 1s;
+    }
+
+    @keyframes floatUpDown {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    button {
+      background: white;
+      color: #0d47a1;
+      border: none;
+      padding: 1rem 3rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 8px 15px rgba(255,255,255,0.2);
+      transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+      animation: pulseButton 3s ease-in-out infinite;
+    }
+    button:hover {
+      background: #1565c0;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 12px 20px rgba(255,255,255,0.4);
+    }
+
+    @keyframes pulseButton {
+      0%, 100% { box-shadow: 0 8px 15px rgba(255,255,255,0.2); }
+      50% { box-shadow: 0 12px 25px rgba(255,255,255,0.4); }
+    }
+
+    /* Wave animation container */
+    .waves {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20vh;
+      min-height: 100px;
+      background: transparent;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      width: 200%;
+      height: 100%;
+      background-repeat: repeat-x;
+      background-size: 50% 100%;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0.5;
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
+    }
+
+    .wave1 {
+      background-image: url('data:image/svg+xml;utf8,<svg width="1200" height="100" viewBox="0 0 1200 100" xmlns="http://www.w3.org/2000/svg"><path fill="%230d47a1" d="M0 50 Q 300 100 600 50 T 1200 50 V100 H0 Z"/></svg>');
+      animation-duration: 12s;
+      opacity: 0.3;
+      bottom: 0;
+      z-index: 2;
+      animation-name: waveMove;
+    }
+
+    .wave2 {
+      background-image: url('data:image/svg+xml;utf8,<svg width="1200" height="100" viewBox="0 0 1200 100" xmlns="http://www.w3.org/2000/svg"><path fill="%231e88e5" d="M0 40 Q 300 90 600 40 T 1200 40 V100 H0 Z"/></svg>');
+      animation-duration: 15s;
+      opacity: 0.4;
+      bottom: 5px;
+      z-index: 3;
+      animation-name: waveMoveReverse;
+    }
+
+    .wave3 {
+      background-image: url('data:image/svg+xml;utf8,<svg width="1200" height="100" viewBox="0 0 1200 100" xmlns="http://www.w3.org/2000/svg"><path fill="%232196f3" d="M0 60 Q 300 110 600 60 T 1200 60 V100 H0 Z"/></svg>');
+      animation-duration: 18s;
+      opacity: 0.25;
+      bottom: 10px;
+      z-index: 1;
+      animation-name: waveMove;
+    }
+
+    @keyframes waveMove {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1000px; }
+    }
+    @keyframes waveMoveReverse {
+      0% { background-position-x: 1000px; }
+      100% { background-position-x: 0; }
+    }
+
+  </style>
 </head>
 <body>
-    <div class="waves"></div>
-    
-    <!-- Animated Logo -->
-    <div class="logo">Freshway PLC</div>
 
-    <!-- Floating grocery icons -->
-    <div class="grocery-icon" style="top: 20%; left: 10%;">🥦</div>
-    <div class="grocery-icon" style="top: 50%; left: 80%;">🍎</div>
-    <div class="grocery-icon" style="top: 70%; left: 30%;">🥛</div>
-    <div class="grocery-icon" style="top: 40%; left: 60%;">🍞</div>
+  <h1>Freshway PLC</h1>
+  <p>Your Roblox Supermarket — Blue & White Theme</p>
+  <button onclick="location.href='/staff-dashboard.html'">Go to Staff Dashboard</button>
 
-    <main>
-        <h1>Welcome to Freshway PLC</h1>
-        <p>Your trusted Roblox supermarket for fresh deals every day!</p>
-        <div id="roblox-counter">Players online: Loading...</div>
-    </main>
+  <div class="waves">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+  </div>
 
-    <script src="script.js"></script>
 </body>
 </html>
