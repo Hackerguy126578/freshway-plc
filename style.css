@@ -1,88 +1,104 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    color: white;
-    text-align: center;
-    height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(180deg, #1e90ff, #87cefa);
-}
-
-/* Waves Animation */
-.waves {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 200%;
-    height: 200%;
-    background: url('https://i.ibb.co/vz6KH6b/wave-pattern.png') repeat-x;
-    background-size: 1000px 200px;
-    animation: waveMove 10s linear infinite;
-    opacity: 0.5;
-}
-
-@keyframes waveMove {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-
-/* Animated Logo */
-.logo {
-    font-size: 2.5rem;
-    font-weight: bold;
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: floatLogo 3s ease-in-out infinite;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-@keyframes floatLogo {
-    0%, 100% { transform: translate(-50%, 0); }
-    50% { transform: translate(-50%, -10px); }
-}
-
-/* Grocery Icons Animation */
-.grocery-icon {
-    position: absolute;
-    font-size: 2rem;
-    animation: floatItem 5s ease-in-out infinite;
-}
-
-@keyframes floatItem {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
-
-/* Main Content */
-main {
-    position: relative;
-    z-index: 2;
-    top: 50%;
-    transform: translateY(-50%);
+/* Basic reset and styles */
+body, html {
+  margin: 0; padding: 0; height: 100%;
+  background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
 }
 
 h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+  font-size: 3rem;
+  z-index: 10;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 p {
-    font-size: 1.2rem;
+  z-index: 10;
+  margin-bottom: 2rem;
+  opacity: 0.8;
 }
 
-#roblox-counter {
-    margin-top: 20px;
-    font-size: 1.1rem;
-    background: rgba(0,0,0,0.2);
-    display: inline-block;
-    padding: 5px 15px;
-    border-radius: 10px;
+button {
+  z-index: 10;
+  background: white;
+  color: #0d47a1;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 8px 15px rgba(255,255,255,0.2);
+}
+
+button:hover {
+  background: #1565c0;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 12px 20px rgba(255,255,255,0.4);
+}
+
+/* Floating icons container */
+.icon-bg {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Basic style for icons */
+.icon {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  fill: rgba(255, 255, 255, 0.15);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* Floating animations with different durations and delays */
+.float1 {
+  animation-name: floatUpDown;
+  animation-duration: 6s;
+  animation-delay: 0s;
+}
+
+.float2 {
+  animation-name: floatUpDown;
+  animation-duration: 8s;
+  animation-delay: 2s;
+}
+
+.float3 {
+  animation-name: floatUpDown;
+  animation-duration: 7s;
+  animation-delay: 1s;
+}
+
+.float4 {
+  animation-name: floatUpDown;
+  animation-duration: 5s;
+  animation-delay: 3s;
+}
+
+@keyframes floatUpDown {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 0.35;
+  }
 }
