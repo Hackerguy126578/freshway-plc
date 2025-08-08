@@ -111,12 +111,26 @@
     }
   }
 </style>
+
+<script>
+  // Lock page if not logged in
+  if (localStorage.getItem('staffLoggedIn') !== 'true') {
+    window.location.href = '/index.html';
+  }
+
+  // Logout function clears login flag and redirects
+  function logout() {
+    localStorage.removeItem('staffLoggedIn');
+    window.location.href = '/index.html';
+  }
+</script>
+
 </head>
 <body>
   <div class="dashboard">
     <header>
       <h1>Freshway PLC Staff Dashboard</h1>
-      <button class="logout-btn" onclick="alert('Logging out...')">Logout</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
 
     <section class="profile">
