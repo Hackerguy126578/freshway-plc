@@ -3,10 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Staff Dashboard - Freshway PLC</title>
+  <title>Freshway PLC Staff Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+      color: white;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .dashboard {
+      max-width: 900px;
+      width: 100%;
+      background: rgba(255 255 255 / 0.15);
+      border-radius: 15px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease forwards;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+    button.logout-btn {
+      background-color: #2563EB;
+      border: none;
+      padding: 10px 18px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 8px rgb(37 99 235 / 0.4);
+      color: white;
+    }
+    button.logout-btn:hover {
+      background-color: #1D4ED8;
+      box-shadow: 0 6px 14px rgb(29 78 216 / 0.6);
+    }
+    .profile, .notes {
+      background: rgba(255 255 255 / 0.25);
+      padding: 20px 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .profile h2, .notes h2 {
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .actions button {
+      background-color: #2563EB;
+      border: none;
+      border-radius: 12px;
+      padding: 15px 25px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      min-width: 160px;
+      box-shadow: 0 6px 15px rgb(37 99 235 / 0.45);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .actions button:hover {
+      background-color: #1D4ED8;
+      box-shadow: 0 8px 20px rgb(29 78 216 / 0.7);
+    }
+    .notes ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Staff Dashboard</h1>
-  <p>This page will be built with your staff features.</p>
+  <div class="dashboard">
+    <header>
+      <h1>Freshway PLC Staff Dashboard</h1>
+      <button class="logout-btn" onclick="alert('Logging out...')">Logout</button>
+    </header>
+
+    <section class="profile">
+      <h2>Your Profile</h2>
+      <p><strong>Username:</strong> desjay123456</p>
+      <p><strong>Role:</strong> Founder</p>
+    </section>
+
+    <section class="actions">
+      <button onclick="alert('Shift Planning coming soon!')">Shift Planning</button>
+      <button onclick="alert('Send LOA feature coming soon!')">Send LOA</button>
+      <button onclick="alert('Admin Dashboard coming soon!')">Admin Dashboard</button>
+      <button onclick="alert('View Profiles coming soon!')">View Profiles</button>
+    </section>
+
+    <section class="notes">
+      <h2>Recent Notes & Warnings</h2>
+      <ul>
+        <li>Note: desjay123456 was promoted on 08/01/2025</li>
+        <li>Warning: younyoun002 received a warning for late submission</li>
+        <li>Demotion: yer2089 demoted for inactivity</li>
+      </ul>
+    </section>
+  </div>
 </body>
 </html>
