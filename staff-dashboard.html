@@ -15,6 +15,7 @@
     padding: 40px 20px;
     min-height: 100vh;
     box-sizing: border-box;
+    flex-direction: column;
   }
   .dashboard {
     max-width: 900px;
@@ -24,12 +25,14 @@
     padding: 30px 40px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     animation: fadeIn 1s ease forwards;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
   }
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
   }
   header h1 {
     margin: 0;
@@ -55,21 +58,43 @@
     background: rgba(255 255 255 / 0.25);
     padding: 20px 25px;
     border-radius: 12px;
-    margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    gap: 20px;
+    align-items: center;
   }
   .profile h2, .rank-check h2 {
     font-weight: 700;
     letter-spacing: 0.8px;
-    margin-top: 0;
-    margin-bottom: 15px;
+    margin: 0 0 15px 0;
+  }
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .profile-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 3px solid #2563EB;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.7);
+    object-fit: cover;
+  }
+  .welcome-msg {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .session-info {
+    font-size: 0.9rem;
+    opacity: 0.8;
   }
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 18px;
     justify-content: center;
-    margin-bottom: 30px;
   }
   .actions button {
     background-color: #2563EB;
@@ -100,6 +125,13 @@
     margin-top: 15px;
     font-weight: 600;
   }
+  footer {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.85rem;
+    opacity: 0.6;
+    padding: 10px;
+  }
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -110,51 +142,101 @@
       transform: translateY(0);
     }
   }
+  /* Responsive */
+  @media (max-width: 480px) {
+    .profile, .rank-check {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .actions {
+      flex-direction: column;
+      align-items: center;
+    }
+    input[type="text"] {
+      width: 100%;
+      margin-bottom: 10px;
+      margin-right: 0;
+    }
+  }
 </style>
 </head>
 <body>
   <div class="dashboard">
     <header>
       <h1>Freshway PLC Staff Dashboard</h1>
-      <button class="logout-btn" onclick="alert('Logging out...')">Logout</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
 
-    <section class="profile">
-      <h2>Your Profile</h2>
-      <p><strong>Username:</strong> desjay123456</p>
-      <p><strong>Role:</strong> Founder</p>
+    <section class="profile" aria-label="User Profile">
+      <img src="" alt="Profile avatar" class="profile-avatar" id="profileAvatar" />
+      <div class="profile-info">
+        <div class="welcome-msg" id="welcomeMsg">Welcome back, desjay123456!</div>
+        <p><strong>Username:</strong> <span id="profileUsername">desjay123456</span></p>
+        <p><strong>Role:</strong> <span id="profileRole">Founder</span></p>
+        <p class="session-info" id="lastLogin">Last login: --</p>
+      </div>
     </section>
 
-    <section class="actions">
+    <section class="actions" aria-label="Dashboard Actions">
       <button onclick="alert('Shift Planning coming soon!')">Shift Planning</button>
       <button onclick="alert('Send LOA feature coming soon!')">Send LOA</button>
       <button onclick="alert('Admin Dashboard coming soon!')">Admin Dashboard</button>
       <button onclick="alert('View Profiles coming soon!')">View Profiles</button>
+      <button onclick="alert('Reports coming soon!')">Reports</button>
+      <button onclick="alert('Settings coming soon!')">Settings</button>
     </section>
 
-    <section class="rank-check">
-      <h2>Check Roblox Group Rank</h2>
-      <input type="text" id="username" placeholder="Enter Roblox username" />
-      <button onclick="checkRank()">Check Rank</button>
-      <div id="rankResult"></div>
+    <section class="rank-check" aria-label="Roblox Group Rank Checker">
+      <div style="width:100%">
+        <h2>Check Roblox Group Rank</h2>
+        <input type="text" id="username" placeholder="Enter Roblox username" aria-label="Roblox username input" />
+        <button onclick="checkRank()">Check Rank</button>
+        <div id="rankResult" role="status" aria-live="polite"></div>
+      </div>
     </section>
   </div>
 
-  <script>
-    const groupId = 13882588; // your group ID Freshway PLC
+  <footer>
+    &copy; 2025 Freshway PLC | Contact support@freshwayplc.com
+  </footer>
 
+  <script>
+    const loggedInUser = "desjay123456"; // You can replace this dynamically or from a session
+    const userRole = "Founder";
+    const groupId = 13882588;
+
+    // Fake last login time for demo
+    const lastLoginTime = new Date(Date.now() - (2 * 3600 * 1000)); // 2 hours ago
+
+    // Update profile data & avatar
+    async function loadProfile() {
+      try {
+        const res = await fetch(`https://api.roblox.com/users/get-by-username?username=${loggedInUser}`);
+        const data = await res.json();
+        if (data && data.Id) {
+          const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${data.Id}&width=420&height=420&format=png`;
+          document.getElementById("profileAvatar").src = avatarUrl;
+          document.getElementById("profileUsername").textContent = loggedInUser;
+          document.getElementById("profileRole").textContent = userRole;
+          document.getElementById("welcomeMsg").textContent = `Welcome back, ${loggedInUser}!`;
+          document.getElementById("lastLogin").textContent = `Last login: ${lastLoginTime.toLocaleString()}`;
+        }
+      } catch (err) {
+        console.error("Failed to load avatar", err);
+      }
+    }
+
+    // Check Roblox group rank of any username
     async function checkRank() {
-      const username = document.getElementById("username").value.trim();
+      const usernameInput = document.getElementById("username").value.trim();
       const rankResult = document.getElementById("rankResult");
       rankResult.textContent = "Checking...";
-      if (!username) {
+      if (!usernameInput) {
         rankResult.textContent = "Please enter a username.";
         return;
       }
-
       try {
-        // Get userId from username
-        const userRes = await fetch(`https://api.roblox.com/users/get-by-username?username=${username}`);
+        const userRes = await fetch(`https://api.roblox.com/users/get-by-username?username=${usernameInput}`);
         const userData = await userRes.json();
 
         if (userData.errorMessage) {
@@ -163,26 +245,35 @@
         }
 
         const userId = userData.Id;
-
-        // Get group rank info
         const rankRes = await fetch(`https://groups.roblox.com/v1/users/${userId}/groups/roles`);
         const rankData = await rankRes.json();
 
         const groupInfo = rankData.data.find(g => g.group.id === groupId);
         if (!groupInfo) {
-          rankResult.textContent = `${username} is NOT in the Freshway PLC group.`;
+          rankResult.textContent = `${usernameInput} is NOT in the Freshway PLC group.`;
           return;
         }
 
         const roleName = groupInfo.role.name;
         const rankNumber = groupInfo.role.rank;
-
-        rankResult.textContent = `${username} is in Freshway PLC as "${roleName}" (Rank: ${rankNumber})`;
+        rankResult.textContent = `${usernameInput} is in Freshway PLC as "${roleName}" (Rank: ${rankNumber})`;
       } catch (error) {
         rankResult.textContent = "Error checking rank. Try again later.";
         console.error(error);
       }
     }
+
+    function logout() {
+      if(confirm("Are you sure you want to log out?")) {
+        // Clear login state or tokens here
+        alert("Logging out...");
+        // Redirect to main page
+        window.location.href = "/index.html";
+      }
+    }
+
+    loadProfile();
   </script>
 </body>
 </html>
+
