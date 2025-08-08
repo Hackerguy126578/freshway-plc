@@ -3,64 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Freshway PLC</title>
+  <title>Freshway PLC - Animated Background</title>
   <style>
-    /* Reset & basic */
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
     body, html {
-      height: 100%;
-      background: #0d47a1;
+      margin: 0; padding: 0; height: 100%;
+      background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
       overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       text-align: center;
-      animation: fadeInContent 1.5s ease forwards;
-      opacity: 0;
-    }
-
-    @keyframes fadeInContent {
-      to { opacity: 1; }
+      position: relative;
     }
 
     h1 {
-      font-size: 3.5rem;
+      font-size: 3rem;
+      z-index: 10;
       margin-bottom: 0.5rem;
-      text-shadow: 0 0 15px rgba(255,255,255,0.5);
-      animation: floatUpDown 6s ease-in-out infinite;
+      text-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
     p {
-      font-size: 1.25rem;
+      z-index: 10;
       margin-bottom: 2rem;
-      opacity: 0.85;
-      animation: floatUpDown 6s ease-in-out infinite 1s;
-    }
-
-    @keyframes floatUpDown {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      opacity: 0.8;
     }
 
     button {
+      z-index: 10;
       background: white;
       color: #0d47a1;
       border: none;
       padding: 1rem 3rem;
       font-size: 1.2rem;
-      font-weight: bold;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 8px 15px rgba(255,255,255,0.2);
+      font-weight: bold;
       transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
-      animation: pulseButton 3s ease-in-out infinite;
+      box-shadow: 0 8px 15px rgba(255,255,255,0.2);
     }
+
     button:hover {
       background: #1565c0;
       color: white;
@@ -68,71 +53,60 @@
       box-shadow: 0 12px 20px rgba(255,255,255,0.4);
     }
 
-    @keyframes pulseButton {
-      0%, 100% { box-shadow: 0 8px 15px rgba(255,255,255,0.2); }
-      50% { box-shadow: 0 12px 25px rgba(255,255,255,0.4); }
-    }
-
-    /* Wave animation container */
-    .waves {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 20vh;
-      min-height: 100px;
-      background: transparent;
-      overflow: hidden;
-      z-index: 1;
+    /* Floating icons container */
+    .icon-bg {
       pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      z-index: 0;
     }
 
-    .wave {
+    /* Basic style for icons */
+    .icon {
       position: absolute;
-      bottom: 0;
-      width: 200%;
-      height: 100%;
-      background-repeat: repeat-x;
-      background-size: 50% 100%;
-      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 0.5;
-      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
+      width: 40px;
+      height: 40px;
+      fill: rgba(255, 255, 255, 0.15);
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
     }
 
-    .wave1 {
-      background-image: url('data:image/svg+xml;utf8,<svg width="1200" height="100" viewBox="0 0 1200 100" xmlns="http://www.w3.org/2000/svg"><path fill="%230d47a1" d="M0 50 Q 300 100 600 50 T 1200 50 V100 H0 Z"/></svg>');
-      animation-duration: 12s;
-      opacity: 0.3;
-      bottom: 0;
-      z-index: 2;
-      animation-name: waveMove;
+    /* Floating animations with different durations and delays */
+    .float1 {
+      animation-name: floatUpDown;
+      animation-duration: 6s;
+      animation-delay: 0s;
     }
 
-    .wave2 {
-      background-image: url('data:image/svg+xml;utf8,<svg width="1200" height="100" viewBox="0 0 1200 100" xmlns="http://www.w3.org/2000/svg"><path fill="%231e88e5" d="M0 40 Q 300 90 600 40 T 1200 40 V100 H0 Z"/></svg>');
-      animation-duration: 15s;
-      opacity: 0.4;
-      bottom: 5px;
-      z-index: 3;
-      animation-name: waveMoveReverse;
+    .float2 {
+      animation-name: floatUpDown;
+      animation-duration: 8s;
+      animation-delay: 2s;
     }
 
-    .wave3 {
-      background-image: url('data:image/svg+xml;utf8,<svg width="1200" height="100" viewBox="0 0 1200 100" xmlns="http://www.w3.org/2000/svg"><path fill="%232196f3" d="M0 60 Q 300 110 600 60 T 1200 60 V100 H0 Z"/></svg>');
-      animation-duration: 18s;
-      opacity: 0.25;
-      bottom: 10px;
-      z-index: 1;
-      animation-name: waveMove;
+    .float3 {
+      animation-name: floatUpDown;
+      animation-duration: 7s;
+      animation-delay: 1s;
     }
 
-    @keyframes waveMove {
-      0% { background-position-x: 0; }
-      100% { background-position-x: 1000px; }
+    .float4 {
+      animation-name: floatUpDown;
+      animation-duration: 5s;
+      animation-delay: 3s;
     }
-    @keyframes waveMoveReverse {
-      0% { background-position-x: 1000px; }
-      100% { background-position-x: 0; }
+
+    @keyframes floatUpDown {
+      0%, 100% {
+        transform: translateY(0);
+        opacity: 0.15;
+      }
+      50% {
+        transform: translateY(-20px);
+        opacity: 0.35;
+      }
     }
 
   </style>
@@ -143,10 +117,27 @@
   <p>Your Roblox Supermarket — Blue & White Theme</p>
   <button onclick="location.href='/staff-dashboard.html'">Go to Staff Dashboard</button>
 
-  <div class="waves">
-    <div class="wave wave1"></div>
-    <div class="wave wave2"></div>
-    <div class="wave wave3"></div>
+  <div class="icon-bg">
+    <!-- Example Roblox icons as SVG paths -->
+    <svg class="icon float1" style="top: 10%; left: 15%;" viewBox="0 0 24 24">
+      <path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/>
+    </svg>
+    <svg class="icon float2" style="top: 30%; left: 40%;" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+    </svg>
+    <svg class="icon float3" style="top: 60%; left: 70%;" viewBox="0 0 24 24">
+      <rect x="6" y="6" width="12" height="12" rx="2" ry="2"/>
+    </svg>
+    <svg class="icon float4" style="top: 80%; left: 25%;" viewBox="0 0 24 24">
+      <polygon points="12,2 15,22 9,22"/>
+    </svg>
+    <!-- Add more icons with different positions and animation classes -->
+    <svg class="icon float2" style="top: 50%; left: 10%;" viewBox="0 0 24 24">
+      <path d="M4 4h16v16H4z"/>
+    </svg>
+    <svg class="icon float1" style="top: 75%; left: 80%;" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8"/>
+    </svg>
   </div>
 
 </body>
