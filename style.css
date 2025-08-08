@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(180deg, #1e90ff, #87cefa);
+}
+
+/* Waves Animation */
+.waves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background: url('https://i.ibb.co/vz6KH6b/wave-pattern.png') repeat-x;
+    background-size: 1000px 200px;
+    animation: waveMove 10s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes waveMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* Animated Logo */
+.logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: floatLogo 3s ease-in-out infinite;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -10px); }
+}
+
+/* Grocery Icons Animation */
+.grocery-icon {
+    position: absolute;
+    font-size: 2rem;
+    animation: floatItem 5s ease-in-out infinite;
+}
+
+@keyframes floatItem {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Main Content */
+main {
+    position: relative;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.2rem;
+}
+
+#roblox-counter {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    background: rgba(0,0,0,0.2);
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 10px;
+}
