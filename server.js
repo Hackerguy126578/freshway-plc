@@ -46,7 +46,7 @@ app.use(session({
 
 // --- Roblox OAuth2 Login ---
 app.get('/auth/login', (req, res) => {
-  const authUrl = `https://apis.roblox.com/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=openid`;
+  const authUrl = https://apis.roblox.com/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=openid;
   res.redirect(authUrl);
 });
 
@@ -68,12 +68,12 @@ app.get('/auth/callback', async (req, res) => {
     const accessToken = tokenResponse.data.access_token;
 
     const userInfoResponse = await axios.get('https://apis.roblox.com/oauth/userinfo', {
-      headers: { Authorization: `Bearer ${accessToken}` }
+      headers: { Authorization: Bearer ${accessToken} }
     });
 
     const userId = userInfoResponse.data.sub;
 
-    const groupRolesResponse = await axios.get(`https://groups.roblox.com/v2/users/${userId}/groups/roles`);
+    const groupRolesResponse = await axios.get(https://groups.roblox.com/v2/users/${userId}/groups/roles);
 
     const roles = groupRolesResponse.data.data;
     const groupRole = roles.find(g => g.group.id === Number(GROUP_ID));
@@ -209,5 +209,5 @@ app.post('/api/user/:robloxId/note', checkAuth, async (req, res) => {
 });
 
 app.listen(PORT || 3000, () => {
-  console.log(`Server running on port ${PORT || 3000}`);
+  console.log(Server running on port ${PORT || 3000});
 });
