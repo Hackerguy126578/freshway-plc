@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const session = require('express-session');
@@ -32,7 +33,7 @@ const Note = require('./models/Note');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3001', // frontend URL
+  origin: 'http://localhost:3001', // frontend URL, change as needed
   credentials: true
 }));
 app.use(bodyParser.json());
@@ -41,10 +42,10 @@ app.use(session({
   secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // set true if HTTPS
+  cookie: { secure: false } // set true if using HTTPS
 }));
 
-// --- Roblox OAuth2 Login ---
+// Roblox OAuth2 Login
 app.get('/auth/login', (req, res) => {
   const authUrl = `https://apis.roblox.com/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=openid`;
   res.redirect(authUrl);
@@ -55,6 +56,7 @@ app.get('/auth/callback', async (req, res) => {
   if (!code) return res.status(400).send('No code provided');
 
   try {
+    // Exchange code for access token
     const tokenResponse = await axios.post('https://apis.roblox.com/oauth/token', new URLSearchParams({
       client_id: CLIENT_ID,
       client_secret: CLIENT_SECRET,
@@ -67,12 +69,14 @@ app.get('/auth/callback', async (req, res) => {
 
     const accessToken = tokenResponse.data.access_token;
 
+    // Get user info from Roblox
     const userInfoResponse = await axios.get('https://apis.roblox.com/oauth/userinfo', {
       headers: { Authorization: `Bearer ${accessToken}` }
     });
 
     const userId = userInfoResponse.data.sub;
 
+    // Check user's group roles
     const groupRolesResponse = await axios.get(`https://groups.roblox.com/v2/users/${userId}/groups/roles`);
 
     const roles = groupRolesResponse.data.data;
@@ -81,7 +85,7 @@ app.get('/auth/callback', async (req, res) => {
     if (!groupRole) return res.status(403).send('You are not in the group.');
     if (!allowedRoles.includes(groupRole.role.id)) return res.status(403).send('No permission.');
 
-    // Save user in DB if new
+    // Save or update user in DB
     let user = await User.findOne({ robloxId: userId });
     if (!user) {
       user = new User({
@@ -95,6 +99,7 @@ app.get('/auth/callback', async (req, res) => {
       await user.save();
     }
 
+    // Store user in session
     req.session.user = {
       id: user._id,
       robloxId: userId,
@@ -102,19 +107,29 @@ app.get('/auth/callback', async (req, res) => {
       roleId: groupRole.role.id,
     };
 
-    res.redirect('http://localhost:3001/dashboard'); // Redirect to frontend dashboard
+    // Redirect to frontend dashboard
+    res.redirect('http://localhost:3001/dashboard');
   } catch (error) {
     console.error(error);
     res.status(500).send('Authentication failed');
   }
 });
 
+// Logout route
+app.post('/auth/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.sendStatus(200);
+  });
+});
+
+// Middleware to check auth
 function checkAuth(req, res, next) {
   if (!req.session.user) return res.status(401).send('Unauthorized');
   next();
 }
 
-// --- API routes ---
+// API routes
 
 // Get current user info
 app.get('/api/user', checkAuth, async (req, res) => {
@@ -128,7 +143,7 @@ app.get('/api/shifts', checkAuth, async (req, res) => {
   res.json(shifts);
 });
 
-// Create new shift (only owners/admins)
+// Create new shift (owners/admins only)
 app.post('/api/shifts', checkAuth, async (req, res) => {
   if (![254,255].includes(req.session.user.roleId)) return res.status(403).send('Forbidden');
   const { title, date, startTime, endTime, assignedTo } = req.body;
@@ -157,7 +172,7 @@ app.post('/api/loa', checkAuth, async (req, res) => {
   res.json(loa);
 });
 
-// Approve or deny LOA (owners/admins only)
+// Approve LOA (owners/admins only)
 app.post('/api/loa/:id/approve', checkAuth, async (req, res) => {
   if (![254,255].includes(req.session.user.roleId)) return res.status(403).send('Forbidden');
   const loa = await LOA.findById(req.params.id);
@@ -167,6 +182,7 @@ app.post('/api/loa/:id/approve', checkAuth, async (req, res) => {
   res.json(loa);
 });
 
+// Deny LOA (owners/admins only)
 app.post('/api/loa/:id/deny', checkAuth, async (req, res) => {
   if (![254,255].includes(req.session.user.roleId)) return res.status(403).send('Forbidden');
   const loa = await LOA.findById(req.params.id);
@@ -189,7 +205,7 @@ app.get('/api/user/:robloxId', checkAuth, async (req, res) => {
   });
 });
 
-// Add note/warning/demotion etc to user (owners/admins only)
+// Add note (owners/admins only)
 app.post('/api/user/:robloxId/note', checkAuth, async (req, res) => {
   if (![254,255].includes(req.session.user.roleId)) return res.status(403).send('Forbidden');
   const { type, reason } = req.body;
